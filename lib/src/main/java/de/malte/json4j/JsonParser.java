@@ -2,6 +2,7 @@ package de.malte.json4j;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.NoSuchElementException;
 import java.util.Objects;
 
@@ -90,7 +91,30 @@ public class JsonParser {
 
     // The opening { is already consumed
     private JsonElement consumeObject(SourceIterator sourceIterator) throws InvalidJsonFormatError {
-        return new JsonNull();
+        var startingRow = sourceIterator.getRow();
+        var startingCol = sourceIterator.getColumn();
+        var map = new LinkedHashMap<String, JsonElement>();
+        sourceIterator.skipWhitespace();
+        if (sourceIterator.peek() == ']')
+            return new JsonObject(map);
+        while (sourceIterator.hasNext()) {
+            if (sourceIterator.next() != '"')
+                throw new InvalidJsonFormatError("expected quoted key in object", sourceIterator.getRow(), sourceIterator.getColumn());
+            var key = consumeString(sourceIterator);
+            sourceIterator.skipWhitespace();
+            if (sourceIterator.next() != ':')
+                throw new InvalidJsonFormatError("expected colon : after object member key", sourceIterator.getRow(), sourceIterator.getColumn());
+            map.put(key, nextElement(sourceIterator));
+            sourceIterator.skipWhitespace();
+            var next = sourceIterator.next();
+            if (next == '}') {
+                return new JsonObject(map);
+            } else if (next != ',') {
+                throw new InvalidJsonFormatError("expected comma here between object members", sourceIterator.getRow(), sourceIterator.getColumn());
+            }
+            sourceIterator.skipWhitespace();
+        }
+        throw new InvalidJsonFormatError("unclosed object starting here", startingRow, startingCol);
     }
 
     private JsonElement consumeBooleanOrNumber(SourceIterator sourceIterator, char startingChar) throws InvalidJsonFormatError {
