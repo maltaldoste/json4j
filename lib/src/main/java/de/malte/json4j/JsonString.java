@@ -7,7 +7,7 @@ import lombok.EqualsAndHashCode;
 /**
  * A JSON string value.
  */
-@EqualsAndHashCode(callSuper = true)
+@EqualsAndHashCode
 @Data
 @AllArgsConstructor
 public class JsonString extends JsonElement {

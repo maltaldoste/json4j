@@ -7,7 +7,7 @@ import lombok.EqualsAndHashCode;
 /**
  * A JSON boolean value.
  */
-@EqualsAndHashCode(callSuper = true)
+@EqualsAndHashCode(callSuper = false)
 @Data
 @AllArgsConstructor
 public class JsonBoolean extends JsonElement {

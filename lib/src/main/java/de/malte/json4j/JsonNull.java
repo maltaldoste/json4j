@@ -6,7 +6,7 @@ import lombok.EqualsAndHashCode;
 /**
  * The JSON null value.
  */
-@EqualsAndHashCode(callSuper = true)
+@EqualsAndHashCode(callSuper = false)
 @Data
 public class JsonNull extends JsonElement {
 }

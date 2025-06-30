@@ -10,7 +10,7 @@ import java.math.BigDecimal;
  * A JSON number value with arbitrary precision.
  * @see BigDecimal
  */
-@EqualsAndHashCode(callSuper = true)
+@EqualsAndHashCode(callSuper = false)
 @Data
 @AllArgsConstructor
 public class JsonNumber extends JsonElement {
