@@ -3,6 +3,7 @@ package de.malte.json4j;
 import lombok.Getter;
 
 import java.util.Iterator;
+import java.util.NoSuchElementException;
 import java.util.Objects;
 
 /**
@@ -43,6 +44,14 @@ public class SourceIterator implements Iterator<Character>, Iterable<Character> 
         while (Character.isWhitespace(c)) {
             c = next();
         }
+    }
+
+    public String nextN(int n) throws NoSuchElementException {
+        var buffer = new StringBuilder();
+        for (int i = 0; i < n; i++) {
+            buffer.append(next());
+        }
+        return buffer.toString();
     }
 
     @Override

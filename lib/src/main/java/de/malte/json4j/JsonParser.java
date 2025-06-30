@@ -1,5 +1,7 @@
 package de.malte.json4j;
 
+import java.math.BigDecimal;
+import java.util.NoSuchElementException;
 import java.util.Objects;
 
 /**
@@ -73,8 +75,69 @@ public class JsonParser {
         return new JsonNull();
     }
 
-    // The opening { is already consumed
     private JsonElement consumeBooleanOrNumber(SourceIterator sourceIterator, char startingChar) throws InvalidJsonFormatError {
-        return new JsonNull();
+        var startingRow = sourceIterator.getRow();
+        var startingCol = sourceIterator.getColumn();
+        if ((startingChar >= '0' && startingChar <= '9') || startingChar == '-' || startingChar == '+') {
+            return consumeNumber(sourceIterator, startingChar);
+        // TODO: The following code looks ugly and isn't DRY
+        } else if (startingChar == 'n') {
+            try {
+                var maybeNull = sourceIterator.nextN(3);
+                if (maybeNull.equals("ull")) {
+                    return new JsonNull();
+                } else {
+                    throw new InvalidJsonFormatError("invalid element starting here", startingRow, startingCol);
+                }
+            } catch (NoSuchElementException e) {
+                throw new InvalidJsonFormatError("invalid element starting here", startingRow, startingCol);
+            }
+        } else if (startingChar == 't') {
+            try {
+                var maybeNull = sourceIterator.nextN(3);
+                if (maybeNull.equals("rue")) {
+                    return new JsonBoolean(true);
+                } else {
+                    throw new InvalidJsonFormatError("invalid element starting here", startingRow, startingCol);
+                }
+            } catch (NoSuchElementException e) {
+                throw new InvalidJsonFormatError("invalid element starting here", startingRow, startingCol);
+            }
+        } else if (startingChar == 'f') {
+            try {
+                var maybeNull = sourceIterator.nextN(4);
+                if (maybeNull.equals("alse")) {
+                    return new JsonBoolean(false);
+                } else {
+                    throw new InvalidJsonFormatError("invalid element starting here", startingRow, startingCol);
+                }
+            } catch (NoSuchElementException e) {
+                throw new InvalidJsonFormatError("invalid element starting here", startingRow, startingCol);
+            }
+        } else {
+            throw new InvalidJsonFormatError("invalid start of element: '" + startingChar + "'", startingRow, startingCol);
+        }
+    }
+
+    private JsonElement consumeNumber(SourceIterator sourceIterator, char startingChar) throws InvalidJsonFormatError {
+        var startingRow = sourceIterator.getRow();
+        var startingCol = sourceIterator.getColumn();
+        var buffer = new StringBuilder();
+        buffer.append(startingChar);
+        while (sourceIterator.hasNext() && isNumberChar(sourceIterator.peek())) {
+            buffer.append(sourceIterator.next());
+        }
+        try {
+            return new JsonNumber(new BigDecimal(buffer.toString()));
+        } catch (NumberFormatException e) {
+            throw new InvalidJsonFormatError("invalid number literal starting here", startingRow, startingCol);
+        }
+    }
+
+    private boolean isNumberChar(char c) {
+        return ('0' <= c && c <= '9')
+            || c == '+' || c == '-'
+            || c == '.'
+            || c == 'e' || c == 'E';
     }
 }
