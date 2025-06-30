@@ -1,6 +1,7 @@
 package de.malte.json4j;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.NoSuchElementException;
 import java.util.Objects;
 
@@ -67,7 +68,24 @@ public class JsonParser {
 
     // The opening [ is already consumed
     private JsonElement consumeArray(SourceIterator sourceIterator) throws InvalidJsonFormatError {
-        return new JsonNull();
+        var startingRow = sourceIterator.getRow();
+        var startingCol = sourceIterator.getColumn();
+        var elements = new ArrayList<JsonElement>();
+        sourceIterator.skipWhitespace();
+        if (sourceIterator.peek() == ']')
+            return new JsonArray(elements);
+        while (sourceIterator.hasNext()) {
+            elements.add(nextElement(sourceIterator));
+            sourceIterator.skipWhitespace();
+            var next = sourceIterator.next();
+            if (next == ']') {
+                return new JsonArray(elements);
+            } else if (next != ',') {
+                throw new InvalidJsonFormatError("expected comma here between array elements", sourceIterator.getRow(), sourceIterator.getColumn());
+            }
+            sourceIterator.skipWhitespace();
+        }
+        throw new InvalidJsonFormatError("unclosed array starting here", startingRow, startingCol);
     }
 
     // The opening { is already consumed
