@@ -40,9 +40,8 @@ public class SourceIterator implements Iterator<Character>, Iterable<Character> 
     }
 
     public void skipWhitespace() {
-        var c = peek();
-        while (Character.isWhitespace(c)) {
-            c = next();
+        while (Character.isWhitespace(peek())) {
+            next();
         }
     }
 
