@@ -73,8 +73,10 @@ public class JsonParser {
         var startingCol = sourceIterator.getColumn();
         var elements = new ArrayList<JsonElement>();
         sourceIterator.skipWhitespace();
-        if (sourceIterator.peek() == ']')
+        if (sourceIterator.peek() == ']') {
+            sourceIterator.next();
             return new JsonArray(elements);
+        }
         while (sourceIterator.hasNext()) {
             elements.add(nextElement(sourceIterator));
             sourceIterator.skipWhitespace();
@@ -95,8 +97,10 @@ public class JsonParser {
         var startingCol = sourceIterator.getColumn();
         var map = new LinkedHashMap<String, JsonElement>();
         sourceIterator.skipWhitespace();
-        if (sourceIterator.peek() == ']')
+        if (sourceIterator.peek() == '}') {
+            sourceIterator.next();
             return new JsonObject(map);
+        }
         while (sourceIterator.hasNext()) {
             if (sourceIterator.next() != '"')
                 throw new InvalidJsonFormatError("expected quoted key in object", sourceIterator.getRow(), sourceIterator.getColumn());
