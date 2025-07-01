@@ -6,8 +6,6 @@ import lombok.EqualsAndHashCode;
 /**
  * A runtime exception thrown when the parser encountered invalid JSON.
  */
-@EqualsAndHashCode(callSuper = true)
-@Data
 public class InvalidJsonFormatError extends RuntimeException {
     /**
      * Construct a new instance with an error message consisting of the given
