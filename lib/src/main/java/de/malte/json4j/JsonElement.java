@@ -11,5 +11,48 @@ public abstract class JsonElement {
         format(speller);
         return speller.toString();
     }
+
     abstract void format(JsonSpeller speller);
+
+    /**
+     * @return this as an instance of {@link JsonArray} if possible else null
+     */
+    public JsonArray asArray() {
+        return null;
+    }
+
+    /**
+     * @return this as an instance of {@link JsonBoolean} if possible else null
+     */
+    public JsonBoolean asBoolean() {
+        return null;
+    }
+
+    /**
+     * @return this as an instance of {@link JsonNull} if possible else null
+     */
+    public JsonNull asNull() {
+        return null;
+    }
+
+    /**
+     * @return this as an instance of {@link JsonNumber} if possible else null
+     */
+    public JsonNumber asNumber() {
+        return null;
+    }
+
+    /**
+     * @return this as an instance of {@link JsonObject} if possible else null
+     */
+    public JsonObject asObject() {
+        return null;
+    }
+
+    /**
+     * @return this as an instance of {@link JsonString} if possible else null
+     */
+    public JsonString asString() {
+        return null;
+    }
 }

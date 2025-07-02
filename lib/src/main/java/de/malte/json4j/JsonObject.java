@@ -22,6 +22,12 @@ public class JsonObject extends JsonElement {
     private @Delegate Map<String, JsonElement> map;
 
     @Override
+    public JsonObject asObject() {
+        return this;
+    }
+
+
+    @Override
     public void format(JsonSpeller speller) {
         if (map.isEmpty()) {
             speller.append("{}");

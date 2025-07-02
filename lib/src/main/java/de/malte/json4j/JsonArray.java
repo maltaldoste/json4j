@@ -22,6 +22,11 @@ public class JsonArray extends JsonElement {
     private @Delegate List<JsonElement> array;
 
     @Override
+    public JsonArray asArray() {
+        return this;
+    }
+
+    @Override
     public void format(JsonSpeller speller) {
         if (array.isEmpty()) {
             speller.append("[]");

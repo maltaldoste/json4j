@@ -10,6 +10,11 @@ import lombok.EqualsAndHashCode;
 @Data
 public class JsonNull extends JsonElement {
     @Override
+    public JsonNull asNull() {
+        return this;
+    }
+
+    @Override
     public void format(JsonSpeller speller) {
         speller.append("null");
     }

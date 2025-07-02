@@ -17,6 +17,11 @@ public class JsonBoolean extends JsonElement {
     private boolean value;
 
     @Override
+    public JsonBoolean asBoolean() {
+        return this;
+    }
+
+    @Override
     public void format(JsonSpeller speller) {
         speller.append(value ? "true" : "false");
     }

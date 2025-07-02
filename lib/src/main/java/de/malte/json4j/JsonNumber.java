@@ -24,6 +24,12 @@ public class JsonNumber extends JsonElement {
     }
 
     @Override
+    public JsonNumber asNumber() {
+        return this;
+    }
+
+
+    @Override
     public void format(JsonSpeller speller) {
         // FIXME: Does this always produce the correct result?
         speller.append(value.toString());
