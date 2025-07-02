@@ -16,10 +16,12 @@ public abstract class JsonSpeller {
      * Asks the speller to insert a newline. A newline is not guaranteed to happen, as is the case with {@link MinimalJsonSpeller}.
      */
     abstract void newLine();
+
     /**
      * Asks the speller to indent. An indent is not guaranteed to happen, as is the case with {@link MinimalJsonSpeller}.
      */
     abstract void indent();
+
     /**
      * Asks the speller to outdent (i. e. reverse the last indent). An outdent is not guaranteed to happen, as is the case with {@link MinimalJsonSpeller}.
      */
