@@ -1,15 +1,23 @@
 package de.malte.json4j;
 
+import lombok.Getter;
+import lombok.Setter;
+
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.LinkedHashMap;
-import java.util.NoSuchElementException;
-import java.util.Objects;
+import java.util.*;
 
 /**
  * A parser of the JSON format.
  */
 public class JsonParser {
+    @Getter
+    @Setter
+    private JsonParserConfig config;
+
+    public JsonParser(JsonParserConfig config) {
+        this.config = Objects.requireNonNull(config);
+    }
+
     /**
      * Parses the given JSON string into the corresponding {@link JsonElement}.
      * Throws an {@link InvalidJsonFormatError} when the given source is not valid
@@ -95,7 +103,7 @@ public class JsonParser {
     private JsonElement consumeObject(SourceIterator sourceIterator) throws InvalidJsonFormatError {
         var startingRow = sourceIterator.getRow();
         var startingCol = sourceIterator.getColumn();
-        var map = new LinkedHashMap<String, JsonElement>();
+        var map = config.isObjectsInOrder() ? new LinkedHashMap<String, JsonElement>() : new HashMap<String, JsonElement>();
         sourceIterator.skipWhitespace();
         if (sourceIterator.peek() == '}') {
             sourceIterator.next();
