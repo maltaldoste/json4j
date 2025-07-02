@@ -28,6 +28,12 @@ public abstract class JsonSpeller {
     abstract void outdent();
 
     /**
+     * Asks the speller to insert the separator between key and value in an object member.
+     * An actual seperator is not guaranteed to happen, as is the case with {@link MinimalJsonSpeller}.
+     */
+    abstract void keyValueSeparator();
+
+    /**
      * Appends the given string as-is to the buffer.
      * @param s the string to append to the buffer
      */

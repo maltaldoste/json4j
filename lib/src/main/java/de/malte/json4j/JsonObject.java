@@ -39,7 +39,8 @@ public class JsonObject extends JsonElement {
         int i = 0;
         for (var member : map.entrySet()) {
             speller.append(member.getKey());
-            speller.append(": ");
+            speller.append(":");
+            speller.keyValueSeparator();
             member.getValue().format(speller);
             if (i != map.size() - 1) {
                 speller.append(',');

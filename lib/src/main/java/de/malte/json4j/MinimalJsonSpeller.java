@@ -15,4 +15,9 @@ public class MinimalJsonSpeller extends JsonSpeller {
     void outdent() {
         // no op
     }
+
+    @Override
+    void keyValueSeparator() {
+        // no op
+    }
 }

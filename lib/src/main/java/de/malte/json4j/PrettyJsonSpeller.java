@@ -77,4 +77,9 @@ public class PrettyJsonSpeller extends JsonSpeller {
     public void outdent() {
         indentLevel -= 1;
     }
+
+    @Override
+    void keyValueSeparator() {
+        append(' ');
+    }
 }
