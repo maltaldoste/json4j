@@ -9,4 +9,8 @@ import lombok.EqualsAndHashCode;
 @EqualsAndHashCode(callSuper = false)
 @Data
 public class JsonNull extends JsonElement {
+    @Override
+    public void format(JsonSpeller speller) {
+        speller.append("null");
+    }
 }

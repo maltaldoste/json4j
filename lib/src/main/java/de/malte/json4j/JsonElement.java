@@ -7,4 +7,9 @@ package de.malte.json4j;
  * An item in a valid JSON string.
  */
 public abstract class JsonElement {
+    public String spell(JsonSpeller speller) {
+        format(speller);
+        return speller.toString();
+    }
+    abstract void format(JsonSpeller speller);
 }

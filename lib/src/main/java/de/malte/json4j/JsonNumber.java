@@ -18,4 +18,10 @@ public class JsonNumber extends JsonElement {
      * The value.
      */
     private BigDecimal value;
+
+    @Override
+    public void format(JsonSpeller speller) {
+        // FIXME: Does this always produce the correct result?
+        speller.append(value.toString());
+    }
 }

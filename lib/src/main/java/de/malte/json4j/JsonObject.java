@@ -18,4 +18,29 @@ public class JsonObject extends JsonElement {
      */
     @Getter
     private @Delegate Map<String, JsonElement> map;
+
+    @Override
+    public void format(JsonSpeller speller) {
+        if (map.isEmpty()) {
+            speller.append("{}");
+            return;
+        }
+        speller.append('{');
+        speller.indent();
+        speller.newLine();
+        int i = 0;
+        for (var member : map.entrySet()) {
+            speller.append(member.getKey());
+            speller.append(": ");
+            member.getValue().format(speller);
+            if (i != map.size() - 1) {
+                speller.append(',');
+                speller.newLine();
+            }
+            i++;
+        }
+        speller.outdent();
+        speller.newLine();
+        speller.append('}');
+    }
 }

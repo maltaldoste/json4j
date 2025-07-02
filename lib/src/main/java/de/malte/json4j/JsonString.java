@@ -15,4 +15,9 @@ public class JsonString extends JsonElement {
      * The value.
      */
     private String value;
+
+    @Override
+    public void format(JsonSpeller speller) {
+        speller.appendStringLiteral(value);
+    }
 }
