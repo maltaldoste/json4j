@@ -3,6 +3,7 @@ package de.malte.json4j;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
+import lombok.ToString;
 import lombok.experimental.Delegate;
 
 import java.util.Map;
@@ -12,6 +13,7 @@ import java.util.Map;
  */
 @AllArgsConstructor
 @EqualsAndHashCode(callSuper = false)
+@ToString
 public class JsonObject extends JsonElement {
     /**
      * The map that contains all the key/value pairs.
