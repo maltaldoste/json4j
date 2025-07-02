@@ -17,12 +17,14 @@ public class PrettyJsonSpeller extends JsonSpeller {
     @Getter
     @Setter
     private int indentAmount;
+
     /**
      * The character use to indent.
      */
     @Getter
     @Setter
     private char indentChar;
+
     /**
      * The current indent level.
      */
@@ -58,10 +60,6 @@ public class PrettyJsonSpeller extends JsonSpeller {
         append(getIndentString());
     }
 
-    private String getIndentString() {
-        return String.valueOf(indentChar).repeat(indentLevel * indentAmount);
-    }
-
     /**
      * Increase indent level by one.
      */
@@ -81,5 +79,9 @@ public class PrettyJsonSpeller extends JsonSpeller {
     @Override
     void keyValueSeparator() {
         append(' ');
+    }
+
+    private String getIndentString() {
+        return String.valueOf(indentChar).repeat(indentLevel * indentAmount);
     }
 }
