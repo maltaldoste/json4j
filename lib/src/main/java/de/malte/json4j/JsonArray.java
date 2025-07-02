@@ -14,7 +14,7 @@ import java.util.List;
 @AllArgsConstructor
 @EqualsAndHashCode(callSuper = false)
 @ToString
-public class JsonArray extends JsonElement {
+public class JsonArray extends JsonElement implements Iterable<JsonElement> {
     /**
      * The array of elements.
      */
