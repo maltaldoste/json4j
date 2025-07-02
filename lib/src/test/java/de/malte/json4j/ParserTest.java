@@ -8,6 +8,7 @@ import org.junit.Test;
 
 import java.math.BigDecimal;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.Map;
 
 import static org.junit.Assert.*;
@@ -16,7 +17,7 @@ public class ParserTest {
     private static JsonParser parser;
 
     @BeforeClass public static void initParser() {
-        parser = new JsonParser();
+        parser = new JsonParser(new JsonParserConfig());
     }
 
     @Test public void parseArray() {
@@ -30,6 +31,10 @@ public class ParserTest {
         assertEquals(new JsonArray(expected), parser.parse(source));
     }
 
+    @Test public void parseEmptyArray() {
+        assertEquals(new JsonArray(Collections.emptyList()), parser.parse("[]"));
+    }
+
     @Test public void parseObject() {
         var expected = Map.of(
             "first", new JsonNull(),
@@ -39,6 +44,10 @@ public class ParserTest {
         var source = "{'first': null, '2nd': 123456789, 'another one': 'spaces are allowed in member keys'}"
             .replaceAll("'", "\"");
         assertEquals(new JsonObject(expected), parser.parse(source));
+    }
+
+    @Test public void parseEmptyObject() {
+        assertEquals(new JsonObject(Collections.emptyMap()), parser.parse("{}"));
     }
 
     @Test public void parseBoolean() {
@@ -65,5 +74,49 @@ public class ParserTest {
         assertThrows(NullPointerException.class, () -> parser.parse(null));
     }
 
-    // TODO: tests for nested arrays and objects
+    @Test public void parseNestedArrays() {
+        var expected = new JsonArray(Arrays.asList(
+                new JsonArray(Arrays.asList(
+                    new JsonArray(Arrays.asList(new JsonNull()))
+                )),
+            new JsonNumber(1),
+            new JsonArray(Collections.emptyList())
+        ));
+        var jsonString = "[[[null]], 1, []]";
+        assertEquals(expected, parser.parse(jsonString));
+    }
+
+    @Test public void parseNestedArraysWithWeirdWhitespace() {
+        var expected = new JsonArray(Arrays.asList(
+            new JsonArray(Arrays.asList(
+                new JsonArray(Arrays.asList(new JsonNull()))
+            )),
+            new JsonNumber(1),
+            new JsonArray(Collections.emptyList())
+        ));
+        var jsonString = "\t  [\n\n[                        [\n\t\t\nnull ]     ]\t\n\n\n\t,1,[\n\n\n\t\n\n    ]\n\t\t    \t\n]\n\n\t\t\n\n   ";
+        assertEquals(expected, parser.parse(jsonString));
+    }
+
+    @Test public void parseNestedObjects() {
+        var expected = new JsonObject(Map.of(
+            "one", new JsonObject(Collections.emptyMap()),
+            "2", new JsonObject(Map.of(
+                "2.1", new JsonObject(Collections.emptyMap())
+            ))
+        ));
+        var jsonString = "{'one': {}, '2': {'2.1': {}}}".replaceAll("'", "\"");
+        assertEquals(expected, parser.parse(jsonString));
+    }
+
+    @Test public void parseNestedObjectsWithWeirdWhitespace() {
+        var expected = new JsonObject(Map.of(
+            "one", new JsonObject(Collections.emptyMap()),
+            "2", new JsonObject(Map.of(
+                "2.1", new JsonObject(Collections.emptyMap())
+            ))
+        ));
+        var jsonString = "{\n\t'one'\t:\t{\t}\t,\n\t'2'\n\t:\t{\n\t\t'2.1'\t:   \n\t{\t}\n\t}\n}".replaceAll("'", "\"");
+        assertEquals(expected, parser.parse(jsonString));
+    }
 }
