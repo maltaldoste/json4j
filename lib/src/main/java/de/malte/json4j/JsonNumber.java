@@ -19,6 +19,10 @@ public class JsonNumber extends JsonElement {
      */
     private BigDecimal value;
 
+    public JsonNumber(long value) {
+        this.value = BigDecimal.valueOf(value);
+    }
+
     @Override
     public void format(JsonSpeller speller) {
         // FIXME: Does this always produce the correct result?
