@@ -1,0 +1,6 @@
+{
+  "project-name": "json4j",
+  "author": "Malte",
+  "year": 2025,
+  "tools": ["java", "gradle", "git", "vim", "Intellij Idea"]
+}

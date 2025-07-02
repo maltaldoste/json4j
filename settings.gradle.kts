@@ -12,3 +12,4 @@ plugins {
 
 rootProject.name = "json4j"
 include("lib")
+include("example")
