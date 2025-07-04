@@ -11,6 +11,9 @@ plugins {
     id("io.freefair.lombok") version "8.14"
 }
 
+group = "de.malte.json4j"
+version = "0.1"
+
 repositories {
     // Use Maven Central for resolving dependencies.
     mavenCentral()
